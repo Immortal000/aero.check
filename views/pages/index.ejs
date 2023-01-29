@@ -9,30 +9,24 @@
   </head>
   <body>
     <h1>Aero Check</h1>
-    <div class="container">
-      <div class="holder">
-        <div class="chemical">
-          <div class="title">
-            <p class="chemName">Multi Gas</p>
-          </div>
-          <div class="chemical_bar"></div>
+    <div class="holder">
+      <div class="chemical">
+        <div class="title">
+          <p class="chemName">Multi Gas</p>
         </div>
-        <div class="chemical">
-          <div class="title"><p class="chemName">Carbon Monoxide</p></div>
-          <div class="chemical_bar"></div>
-        </div>
-        <div class="chemical">
-          <div class="title"><p class="chemName">Smoke/Vapor</p></div>
-          <div class="chemical_bar"></div>
-        </div>
-        <div class="chemical">
-          <div class="title"><p class="chemName">VOC</p></div>
-          <div class="chemical_bar"></div>
-        </div>
+        <div class="chemical_bar"></div>
       </div>
-      <div class="symptoms">
-        <h3>Symptoms:</h3>
-        <p id="description"></p>
+      <div class="chemical">
+        <div class="title"><p class="chemName">Carbon Monoxide</p></div>
+        <div class="chemical_bar"></div>
+      </div>
+      <div class="chemical">
+        <div class="title"><p class="chemName">Smoke/Vapor</p></div>
+        <div class="chemical_bar"></div>
+      </div>
+      <div class="chemical">
+        <div class="title"><p class="chemName">VOC</p></div>
+        <div class="chemical_bar"></div>
       </div>
     </div>
 
@@ -44,7 +38,6 @@
     <!-- <script src="script.js"></script> -->
     <script>
       // Onload function to create the chart
-      let description = document.getElementById("description");
       var multi_gas = [{ x: 0, y: 0 }]; // dataPoints for the multi gas
       var Co_data = [{ x: 0, y: 0 }]; // datapoints for carbon monoxide
       var smoke = [{ x: 0, y: 0 }]; // Datapoints for the smoke gas
@@ -105,11 +98,6 @@
                 multi_gas.shift();
               }
               chart.render();
-
-              if (width > 0.4) {
-                description.innerHTML = "";
-                let all_symptoms = "confusion, intense headaches, brain damage and/or death";
-              }
               break;
             case 1:
               new_data = { x: Co_data[Co_data.length - 1]["x"] + 1, y: width * 1000 };
@@ -121,22 +109,11 @@
 
               chart.render();
 
-              if (width > 0.4) {
-                description.innerHTML = "";
-                let all_symptoms =
-                  " Exposure can irritate the eyes, nose and throat causing coughing and wheezing. Exposure to high concentrations can cause headache, nausea, vomiting, dizziness and passing out";
-              }
-
               break;
             case 2:
               new_data = { x: smoke[smoke.length - 1]["x"] + 1, y: width * 1000 };
               smoke.push(new_data);
               chart.render();
-
-              if (width > 0.4) {
-                description.innerHTML = "";
-                let all_symptoms = "Dimmed sight, sweating, tremor, unconsciousness, and possible death";
-              }
 
               if (smoke.length > dataLength) {
                 smoke.shift();
@@ -146,11 +123,6 @@
               new_data = { x: voc[voc.length - 1]["x"] + 1, y: width * 1000 };
               voc.push(new_data);
               chart.render();
-
-              if (width > 0.4) {
-                description.innerHTML = "";
-                let all_symptoms = "May quickly ignite when exposed to heat, sparks or flames.";
-              }
 
               if (voc.length > dataLength) {
                 voc.shift();
