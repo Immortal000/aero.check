@@ -32,6 +32,10 @@ h1 {
   margin-left: -6rem;
 }
 
+.container {
+  display: flex;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
 }

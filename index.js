@@ -27,6 +27,10 @@ app.get("/", (req, res) => {
   res.render("pages/index");
 });
 
+app.get("/login", (req, res) => {
+  res.render("pages/login");
+});
+
 io.on("connection", (socket) => {
   console.log("a user connected");
 });
