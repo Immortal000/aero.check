@@ -7,12 +7,12 @@ void setup(){
   Serial.begin(9600);      // sets the serial port to 9600
 }
 void loop(){
-  float voltage_0;
+  float voltage_0; // voltage values to be sent to javascript 
   float voltage_1;
   float voltage_2;
   float voltage_3;
 
-  voltage_0 = getCO(gasSensor_0);
+  voltage_0 = getCO(gasSensor_0); // functions to read gas sensor values, manually calibrated
   voltage_1 = getVoltage(gasSensor_1);
   voltage_2 = getSmoke(gasSensor_2);
   voltage_3 = getButane(gasSensor_3);
@@ -47,8 +47,4 @@ float getSmoke(int pin)
 
 float getVoltage(int pin){
   return (analogRead(pin) * 3);
-  //return (analogRead(pin) * 0.007882814);
-  // This equation converts the 0 to 1023 value that analogRead()
-  // returns, into a 0.0 to 5.0 value that is the true voltage
-  // being read at that pin.
 }
