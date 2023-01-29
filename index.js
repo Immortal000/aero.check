@@ -4,9 +4,15 @@ const http = require("http");
 const server = http.createServer(app);
 const { SerialPort } = require("serialport");
 const { ReadlineParser } = require("@serialport/parser-readline");
+const path = require("path");
 
 const { Server } = require("socket.io");
 const io = new Server(server);
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+app.use(express.static(path.join(__dirname, "public")));
 
 const parser = new ReadlineParser({ delimiter: "\r\n" });
 
@@ -18,7 +24,7 @@ let port = new SerialPort({
 port.pipe(parser);
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+  res.render("pages/index");
 });
 
 io.on("connection", (socket) => {

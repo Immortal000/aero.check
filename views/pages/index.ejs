@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <h1>Aero Check</h1>
+    <div class="holder">
+      <div class="chemical">
+        <div class="title">
+          <p class="chemName">Multi Gas</p>
+        </div>
+        <div class="chemical_bar"></div>
+      </div>
+      <div class="chemical">
+        <div class="title"><p class="chemName">Carbon Monoxide</p></div>
+        <div class="chemical_bar"></div>
+      </div>
+      <div class="chemical">
+        <div class="title"><p class="chemName">Smoke/Vapor</p></div>
+        <div class="chemical_bar"></div>
+      </div>
+      <div class="chemical">
+        <div class="title"><p class="chemName">VOC</p></div>
+        <div class="chemical_bar"></div>
+      </div>
+    </div>
+
+    <div id="chartContainer" style="height: 370px; width: 100%"></div>
+
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <!-- <script src="script.js"></script> -->
+    <script>
+      // Onload function to create the chart
+      var multi_gas = [{ x: 0, y: 0 }]; // dataPoints for the multi gas
+      var Co_data = [{ x: 0, y: 0 }]; // datapoints for carbon monoxide
+      var smoke = [{ x: 0, y: 0 }]; // Datapoints for the smoke gas
+      var voc = [{ x: 0, y: 0 }]; // Datapoints for VOC
+      var dataLength = 40;
+
+      var chart = new CanvasJS.Chart("chartContainer", {
+        axisY: {
+          title: "Gasses",
+        },
+        axisX: {
+          title: "Time",
+        },
+        theme: "dark2",
+        backgroundColor: "#151515",
+        title: {
+          text: "Hazardous Gasses Level",
+        },
+        data: [
+          {
+            type: "line",
+            dataPoints: multi_gas,
+          },
+          {
+            type: "line",
+            dataPoints: Co_data,
+          },
+          {
+            type: "line",
+            dataPoints: smoke,
+          },
+          {
+            type: "line",
+            dataPoints: voc,
+          },
+        ],
+      });
+
+      chart.render();
+
+      let information_box = document.getElementsByClassName("chemical_bar");
+      var socket = io();
+      socket.on("data", function (data) {
+        let recieved_data = data.toString().split(",");
+        for (let i = 0; i < information_box.length; i++) {
+          let width = parseInt(recieved_data[i]) / 1000;
+          if (width > 1) {
+            width = 1;
+          }
+
+          let new_data = {};
+
+          switch (i) {
+            case 0:
+              new_data = { x: multi_gas[multi_gas.length - 1]["x"] + 1, y: width * 1000 };
+              multi_gas.push(new_data);
+              if (multi_gas.length > dataLength) {
+                multi_gas.shift();
+              }
+              chart.render();
+              break;
+            case 1:
+              new_data = { x: Co_data[Co_data.length - 1]["x"] + 1, y: width * 1000 };
+              Co_data.push(new_data);
+
+              if (Co_data.length > dataLength) {
+                Co_data.shift();
+              }
+
+              chart.render();
+
+              break;
+            case 2:
+              new_data = { x: smoke[smoke.length - 1]["x"] + 1, y: width * 1000 };
+              smoke.push(new_data);
+              chart.render();
+
+              if (smoke.length > dataLength) {
+                smoke.shift();
+              }
+              break;
+            case 3:
+              new_data = { x: voc[voc.length - 1]["x"] + 1, y: width * 1000 };
+              voc.push(new_data);
+              chart.render();
+
+              if (voc.length > dataLength) {
+                voc.shift();
+              }
+              break;
+          }
+          information_box[i].style.width = width * 500 + "px";
+          information_box[i].innerHTML = `<p>${recieved_data[i]}</p>`;
+          // Update the chart with the data
+
+          if (width > 0.4 && width <= 0.6) {
+            information_box[i].style.backgroundColor = "yellow";
+          } else if (width > 0.6) {
+            information_box[i].style.backgroundColor = "red";
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

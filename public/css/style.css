@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400&family=Poppins&family=Rubik&display=swap");
+
+body {
+  background-color: #151515;
+  font-family: "Poppins";
+  color: white;
+}
+
+h1 {
+  color: rgba(255, 255, 255, 0.696);
+  font-size: 3rem;
+}
+
+.chemical {
+  margin: 20px;
+  margin-left: 7rem;
+  display: flex;
+}
+
+.chemical_bar {
+  background-color: yellowgreen;
+  color: black;
+}
+
+.title {
+  flex-grow: auto;
+  width: 5%;
+}
+
+.chemName {
+  color: aliceblue;
+  margin-left: -6rem;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #191919;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #19ff4391;
+  border-radius: 100vw;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #19ff21e8;
+}
